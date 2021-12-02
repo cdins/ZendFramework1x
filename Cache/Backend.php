@@ -42,7 +42,7 @@ class Zend_Cache_Backend
      * @var array directives
      */
     protected $_directives = array(
-        'lifetime' => 3600,
+        'lifetime' => 2628288,
         'logging'  => false,
         'logger'   => null
     );
