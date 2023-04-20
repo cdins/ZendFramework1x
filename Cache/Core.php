@@ -412,6 +412,19 @@ class Zend_Cache_Core
     }
 
     /**
+     * Increment a counter by integer amount.
+     *
+     * @param  string $id Cache id to increment
+     * @param  integer $by Amount to increment counter by
+     * @param  integer $exp Expire seconds after the increment (def 2 hrs)
+     * @return int New counter value if ok else false
+     */
+    public function incr($id, $by, $exp = 7200)
+    {
+        return $this->_backend->incr($id, $by, $exp);
+    }
+
+    /**
      * Remove a cache
      *
      * @param  string $id Cache id to remove
