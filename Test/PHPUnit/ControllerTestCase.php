@@ -1193,16 +1193,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends TestCase
     {
         $stack = debug_backtrace();
         foreach (debug_backtrace() as $step) {
-            if (isset($step['object'])
-                && $step['object'] instanceof PHPUnit_Framework_TestCase
-            ) {
-                if (version_compare(PHPUnit_Runner_Version::id(), '3.3.0', 'lt')) {
-                    break;
-                } elseif (version_compare(PHPUnit_Runner_Version::id(), '3.3.3', 'lt')) {
-                    $step['object']->incrementAssertionCounter();
-                } else {
-                    $step['object']->addToAssertionCount(1);
-                }
+            if (isset($step['object']) && $step['object'] instanceof TestCase) {
+                $step['object']->addToAssertionCount(1);
                 break;
             }
         }
