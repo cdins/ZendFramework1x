@@ -19,15 +19,6 @@
  * @version    $Id: ControllerTestCase.php 24213 2011-07-08 21:16:45Z rdohms $
  */
 
-/** @see PHPUnit_Runner_Version */
-require_once 'PHPUnit/Runner/Version.php';
-
-/**
- * Depending on version, include the proper PHPUnit support
- * @see PHPUnit_Autoload
- */
-require_once (version_compare(PHPUnit_Runner_Version::id(), '3.5.0', '>=')) ? 'PHPUnit/Autoload.php' : 'PHPUnit/Framework.php';
-
 /** @see Zend_Controller_Front */
 require_once 'Zend/Controller/Front.php';
 
@@ -43,17 +34,19 @@ require_once 'Zend/Session.php';
 /** @see Zend_Registry */
 require_once 'Zend/Registry.php';
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Functional testing scaffold for MVC applications
  *
- * @uses       PHPUnit_Framework_TestCase
+ * @uses       PHPUnit\Framework\TestCase
  * @category   Zend
  * @package    Zend_Test
  * @subpackage PHPUnit
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_TestCase
+abstract class Zend_Test_PHPUnit_ControllerTestCase extends TestCase
 {
     /**
      * @var mixed Bootstrap file path or callback
@@ -1200,16 +1193,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     {
         $stack = debug_backtrace();
         foreach (debug_backtrace() as $step) {
-            if (isset($step['object'])
-                && $step['object'] instanceof PHPUnit_Framework_TestCase
-            ) {
-                if (version_compare(PHPUnit_Runner_Version::id(), '3.3.0', 'lt')) {
-                    break;
-                } elseif (version_compare(PHPUnit_Runner_Version::id(), '3.3.3', 'lt')) {
-                    $step['object']->incrementAssertionCounter();
-                } else {
-                    $step['object']->addToAssertionCount(1);
-                }
+            if (isset($step['object']) && $step['object'] instanceof TestCase) {
+                $step['object']->addToAssertionCount(1);
                 break;
             }
         }
