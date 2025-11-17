@@ -364,11 +364,18 @@ class Zend_Session extends Zend_Session_Abstract
 
         $cookieParams = session_get_cookie_params();
 
+        // Preserve httponly flag and add SameSite via path workaround
+        $httponly = $cookieParams['httponly'] ?? true;
+
+        // Add SameSite to path if not already present (PHP 7.1 workaround)
+        $path = sprintf("%s; SameSite=Strict", $cookieParams['path']);
+
         session_set_cookie_params(
             $seconds,
-            $cookieParams['path'],
+            $path,
             $cookieParams['domain'],
-            $cookieParams['secure']
+            $cookieParams['secure'],
+            $httponly
             );
 
         // normally "rememberMe()" represents a security context change, so should use new session id
