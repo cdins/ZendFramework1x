@@ -368,7 +368,7 @@ class Zend_Session extends Zend_Session_Abstract
         $httponly = $cookieParams['httponly'] ?? true;
 
         // Add SameSite to path if not already present (PHP 7.1 workaround)
-        $path = sprintf("%s; SameSite=Strict", $cookieParams['path']);
+        $path = sprintf("%s; SameSite=Lax", $cookieParams['path']);
 
         session_set_cookie_params(
             $seconds,
